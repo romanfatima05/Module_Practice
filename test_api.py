@@ -11,7 +11,17 @@ def base_url():
 def api_url(base_url):
     return f"{base_url}/users"
 
+@pytest.fixture
+def api_session(base_url):
+    session = requests.Session()
 
+    session.headers.update({
+        "Accept": "application/json"
+    })
+
+    yield session
+
+    session.close()
 def test_user(api_url):
     response = requests.get(f"{api_url}/1")
 
