@@ -1,25 +1,30 @@
-list=[2,3,1,23.1]
-print(list)
-print(len(list))
-print(type(list))
-print(list.append(23))
-print(list)
-list.remove(2)
-print(list)
-list.pop(2)
-print(list)
-list.reverse()
-print(list)
-list.extend([1,2,34,])
-print(list)
-list.insert(0,1)
-print(list)
-list.count(2)
-print(list)   
+tuple={2,3,1,23.1,2,3,2}
+print(tuple)
+print(len(tuple))
+print(type(tuple))
 
-print(list[1:3])
-print(min(list))   
-print(max(list))   
-list1=list
-print(list)
-print(list1)                                                                  
+print(min(tuple))   
+print(max(tuple))   
+tuple1=tuple
+print(tuple)
+print(tuple1)    
+#string operator
+text="i like apple"
+print(text)
+print(text[2:5])
+print(text.replace("i","we"))
+print(text[3:-1])
+print(text*2)
+
+print(text.capitalize())
+print(text.upper())
+print(text.lower())
+print("Hello "+text+" sure")
+words = ["I", "love", "Python"]
+
+result = " ".join(words)
+
+print(result)
+text = "I love Python"
+
+print(text.split())
