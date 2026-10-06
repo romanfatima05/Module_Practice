@@ -1,51 +1,25 @@
-#loop
-i=1
-sum=1
+list=[2,3,1,23.1]
+print(list)
+print(len(list))
+print(type(list))
+print(list.append(23))
+print(list)
+list.remove(2)
+print(list)
+list.pop(2)
+print(list)
+list.reverse()
+print(list)
+list.extend([1,2,34,])
+print(list)
+list.insert(0,1)
+print(list)
+list.count(2)
+print(list)   
 
-while i<=5:
-    sum+=i
-    i+=1
-    #sum*=i
-    print(sum)
-#recursion    
-def sum_n(n):
-    if n == 0:
-        return 0
-    return n + sum_n(n - 1)
-
-n = int(input("Enter n: "))
-print(sum_n(n))
-#loop
-i=1
-fac=1
-while i<=5:
-    fac*=i
-    i+=1
-    
-    print(fac)
-#recursion
-def fac_n(n):
-    if n == 0:
-        return 1
-    return n * fac_n(n - 1)
-
-n = int(input("Enter n: "))
-print(fac_n(n))
-#recursion
-def fib(n):
-    if(n==0):
-        return 0
-    if (n==1):
-        return 1
-    return fib(n-1)+fib(n-2)
-
-n = int(input("Enter n: "))
-print(fib(n))
-def fib(n):
-    if(n==0):
-        return 0
-    if (n==1):
-        return 1
-    return fib(n-1)+fib(n-2)
-for i in range(5):
-    print(fib(i), end=" ")
+print(list[1:3])
+print(min(list))   
+print(max(list))   
+list1=list
+print(list)
+print(list1)                                                                  
