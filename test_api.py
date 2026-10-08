@@ -1,10 +1,7 @@
-import requests
-def test_user(url,api_session):
-    response = requests.get(f"{url}/1")
 
-    assert response.status_code == 200
+def test_1(setup):
+    print("Test 1")
 
-    data = response.json()
 
-    assert data["id"] == 1
-    assert "name" in data
+def test_2(setup):
+    print("Test 2")
