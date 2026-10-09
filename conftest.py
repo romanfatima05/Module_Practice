@@ -1,5 +1,3 @@
-import pytest
-import requests
 
 
 import pytest
@@ -7,7 +5,7 @@ import requests
 
 
 @pytest.fixture
-def base_url(scope="module"):
+def base_url():
     return "https://jsonplaceholder.typicode.com"
 
 
@@ -24,8 +22,8 @@ def api_session(base_url):
     session.close()
 
    
-@pytest.fixture(autouse=True)
-def setup(scope="session"):
-    print("Automatic fixture running")
-    yield 
-    print("teardown")
+#@pytest.fixture(autouse=True)
+#def setup(scope="session"):
+    #print("Automatic fixture running")
+  #  yield 
+#    print("teardown")
