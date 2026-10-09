@@ -2,20 +2,30 @@ import pytest
 import requests
 
 
-@pytest.fixture()
-def api():
-    return "https://jsonplaceholder.typicode.com"
-@pytest.fixture()
-def url(api):
-    return f"{api}/users"
-@pytest.fixture()
-def api_session(url):
-    session = requests.Session()
-    session.headers.update({
-        "accept":"application/json"
-    })
+import pytest
+import requests
 
+
+@pytest.fixture
+def base_url(scope="module"):
+    return "https://jsonplaceholder.typicode.com"
+
+
+@pytest.fixture
+def api_session(base_url):
+    session = requests.Session()
+
+    session.headers.update({
+        "Accept": "application/json"
+    })
 
     yield session
 
+    session.close()
+
    
+@pytest.fixture(autouse=True)
+def setup(scope="session"):
+    print("Automatic fixture running")
+    yield 
+    print("teardown")
