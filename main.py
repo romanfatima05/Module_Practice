@@ -1,100 +1,142 @@
-arr=[2,9,6,8,45,90]
-largest=arr[0]
-for num in arr:
-    if num > largest:
-        largest=num
-print(largest)
+class Node:
+    def __init__(self,data):
+        self.data=data
+        self.next=None
+n1 = Node(10)
+n2 = Node(20)
+n3 = Node(30)
+n4=Node(40)
+n1.next = n2
+n2.next = n3
+n3.next = n4
+
+# Display the linked list
+current = n1
+
+while current is not  None:
+    print(current.data, end=" -> ")
+    current = current.next
+
+print("None")
 
 
-arr=[2,9,-6,8,45,90]
-smallest=arr[0]
-for num in arr:
-    if num < smallest:
-        smallest=num
-print(smallest)
+
+class Node:
+    def __init__(self,data):
+        self.data=data
+        self.next=None
+n1 = Node(10)
+n2 = Node(20)
+n3 = Node(30)
+n4=Node(40)
+n1.next = n2
+n2.next = n3
+n3.next = n4
+new_node = Node(5)
+
+# Insert at the beginning
+new_node.next = n1
+head = new_node
+
+# Display the linked list
+current = head
+
+while current is not  None:
+    print(current.data, end=" -> ")
+    current = current.next
+
+print("None")
 
 
-arr=[2,9,6,8]
-total=0
-for i in arr:
-    total+=i
-print(total)
 
-arr=[2,9,7,8,4,3]
-#result=arr[0]
-for num in arr:
-    if num %2==0:
-        (print(num))
+class node:
+    def __init__(self,data):
+        self.data=data
+        self.next=None
+n1=node(10)
+n2=node(13)
+n3=node(45)
+n1.next=n2
+n2.next=n3
 
-arr=[2,9,7,8,4,3]
-result=0
-for num in arr:
-    if num %2==0:
-        
-        result+=1
-print(result)
+new_node=node(87)
+current = n1
+
+while current.next is not  None:
+   
+    current = current.next
+current.next = new_node
+
+# Display the list
+current = n1
+while current is not None:
+    print(current.data, end=" -> ")
+    current = current.next
+
+print("None")
 
 
-arr=[2,9,7,8,4,3]
-result=0
-for num in arr:
-    if num %2!=0:
-        
-        result+=1
-print(result)
+class node:
+    def __init__(self,data):
+        self.data=data
+        self.next=None
+n1=node(10)
+n2=node(13)
+n3=node(45)
+n1.next=n2
+n2.next=n3
 
-arr=[10,25,30,46,50]
-target=30
-for i in arr:
-    if i==target:
-        print("found",i)
+# Display the list
+target = 41
+current = n1
+found = False
+
+while current is not None:
+    if current.data==target:
+        found =True
         break
+   
+    current = current.next
+
+if found:
+    print("Found")
 else:
-    print("not found")
+    print("Not found")
 
-arr=[10,25,30,46,50]
-target=30
-for i in range (len(arr)):
-    if arr[i]==target:
-        print("found",i)
-        break
+class node:
+    def __init__(self,data):
+        self.data=data
+        self.next=None
+n1=node(10)
+n2=node(13)
+n3=node(45)
+n1.next=n2
+n2.next=n3
+
+# Display the list
+target = 45
+head= n1
+
+if head is not None and head.data == target:
+    head = head.next
 else:
-    print("not found")
+     current = head
 
-arr = [10, 25, 30, 46, 50]
-target = 100
-for i in range (len(arr)):
-    if arr[i]==target:
-        print("found",i)
-        break
-else:
-    print("not found")
+while current is not None and current.next is not None:
+        if current.next.data == target:
+            current.next = current.next.next
+            break
 
-arr = [2, 5, 2, 8, 2, 9]
-target = 2
-count=0
-for i in arr:
-    if i==target:
-        count+=1
-print(count)
+        current = current.next
+current = head
+while current is not None:
+    print(current.data, end=" -> ")
+    current = current.next
 
-arr=[1,6,23.,56,78,50]
-re=[]
-for i in range ((len(arr))-1,-1,-1):
-    
-    re.append (arr[i])
-print(re)
+print("None")
 
-arr = [10, 20, 30, 20, 40, 10, 50]
 
-seen = []
-duplicates = []
 
-for i in arr:
-    if i in seen:
-        if i not in duplicates:
-            duplicates.append(i)
-    else:
-        seen.append(i)
 
-print(duplicates)
+
+
