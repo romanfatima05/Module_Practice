@@ -1,7 +1,6 @@
 import requests
-def test_1():
-    print("Test 1")
+def test_user_id():
+    assert 1 == 1
 
-
-def test_2():
-    print("Test 2")
+def test_user_name():
+    assert "Roman" == "Roman"
