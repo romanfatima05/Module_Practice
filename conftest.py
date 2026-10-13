@@ -23,7 +23,7 @@ def api_session(base_url):
 
    
 #@pytest.fixture(autouse=True)
-#def setup(scope="session"):
+#def setup():
     #print("Automatic fixture running")
-  #  yield 
-#    print("teardown")
+   # yield 
+    #print("teardown")
