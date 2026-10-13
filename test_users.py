@@ -64,4 +64,39 @@ def test_multi_users(api_session,base_url,user_id,expected_status):
         assert data["id"] == user_id
     else:
         assert data == {}
+def test_final_users(api_session,base_url):
+    response=api_session.get(f"{base_url}/users/1")
+    assert response.status_code==200
+    data=response.json()
+    assert data["id"]==1
+    assert data["name"]=="Leanne Graham"
+    assert data["email"]=="Sincere@april.biz"
+    assert isinstance(data["name"],str)
+    assert isinstance(data["email"],str)
+    assert "name" in data
+    assert "email" in data
+    assert "id" in data
+    assert "@" in data["email"]
+    email = data["email"]
 
+    assert "@" in email
+    username, domain = email.split("@")
+    assert username != ""
+    assert domain != ""
+def test_list_users(api_session,base_url):
+    response=api_session.get(f"{base_url}/users")
+    data=response.json()
+    assert isinstance(data,list)
+    assert len(data)>0
+    assert isinstance (data[0],dict)
+    for user in data:
+      assert isinstance(user, dict)
+      assert "id" in user
+      assert "name" in user
+      assert "email" in user
+      assert len(data)==10
+      user_ids = [user["id"] for user in data]
+
+      assert len(user_ids) == len(set(user_ids))
+      emails=[user["email"]for user in data]
+      assert len(emails) ==len(set(emails))
