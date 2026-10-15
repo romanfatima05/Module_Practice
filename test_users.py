@@ -100,3 +100,20 @@ def test_list_users(api_session,base_url):
       assert len(user_ids) == len(set(user_ids))
       emails=[user["email"]for user in data]
       assert len(emails) ==len(set(emails))
+      assert "@" in user["email"]
+      assert user["name"].strip()!=""
+      assert user["id"]>0
+      assert isinstance(user["name"], str)
+      assert isinstance(user["email"], str)
+                        
+def test_users_response_header(api_session, base_url):
+    response = api_session.get(f"{base_url}/users")
+
+    assert response.status_code == 200
+    assert "application/json" in response.headers["Content-Type"]
+def test_time_users(api_session,base_url):
+    response=api_session.get(f"{base_url}/users")
+    assert response.status_code==200
+    assert response.elapsed.total_seconds()<5
+
+
