@@ -1,142 +1,40 @@
-class Node:
-    def __init__(self,data):
-        self.data=data
-        self.next=None
-n1 = Node(10)
-n2 = Node(20)
-n3 = Node(30)
-n4=Node(40)
-n1.next = n2
-n2.next = n3
-n3.next = n4
+arr=[2,7,8,87]
+index=2
+value=43
+arr.append(0)
+for i in range(len(arr) - 1, index, -1):
+    arr[i] = arr[i - 1]
 
-# Display the linked list
-current = n1
+arr[index] = value
 
-while current is not  None:
-    print(current.data, end=" -> ")
-    current = current.next
-
-print("None")
+print(arr)
 
 
 
-class Node:
-    def __init__(self,data):
-        self.data=data
-        self.next=None
-n1 = Node(10)
-n2 = Node(20)
-n3 = Node(30)
-n4=Node(40)
-n1.next = n2
-n2.next = n3
-n3.next = n4
-new_node = Node(5)
+arr=[10,20,30,40,50,60,70]
+index=3
+for i in range(index,(len(arr)-1)):
+    arr[i]=arr[i + 1]
+del arr[-1]
+print(arr)
 
-# Insert at the beginning
-new_node.next = n1
-head = new_node
+arr = [10, 20, 30, 40, 50, 60, 70]
+target = 50
 
-# Display the linked list
-current = head
+index = -1
 
-while current is not  None:
-    print(current.data, end=" -> ")
-    current = current.next
-
-print("None")
-
-
-
-class node:
-    def __init__(self,data):
-        self.data=data
-        self.next=None
-n1=node(10)
-n2=node(13)
-n3=node(45)
-n1.next=n2
-n2.next=n3
-
-new_node=node(87)
-current = n1
-
-while current.next is not  None:
-   
-    current = current.next
-current.next = new_node
-
-# Display the list
-current = n1
-while current is not None:
-    print(current.data, end=" -> ")
-    current = current.next
-
-print("None")
-
-
-class node:
-    def __init__(self,data):
-        self.data=data
-        self.next=None
-n1=node(10)
-n2=node(13)
-n3=node(45)
-n1.next=n2
-n2.next=n3
-
-# Display the list
-target = 41
-current = n1
-found = False
-
-while current is not None:
-    if current.data==target:
-        found =True
+# Find the target value
+for i in range(len(arr)):
+    if arr[i] == target:
+        index = i
         break
-   
-    current = current.next
 
-if found:
-    print("Found")
-else:
-    print("Not found")
+# Delete it if found
+if index != -1:
+    for i in range(index, len(arr) - 1):
+        arr[i] = arr[i + 1]
 
-class node:
-    def __init__(self,data):
-        self.data=data
-        self.next=None
-n1=node(10)
-n2=node(13)
-n3=node(45)
-n1.next=n2
-n2.next=n3
+    del arr[-1]
 
-# Display the list
-target = 45
-head= n1
-
-if head is not None and head.data == target:
-    head = head.next
-else:
-     current = head
-
-while current is not None and current.next is not None:
-        if current.next.data == target:
-            current.next = current.next.next
-            break
-
-        current = current.next
-current = head
-while current is not None:
-    print(current.data, end=" -> ")
-    current = current.next
-
-print("None")
-
-
-
-
-
-
+print(arr)
+               
