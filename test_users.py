@@ -117,3 +117,50 @@ def test_time_users(api_session,base_url):
     assert response.elapsed.total_seconds()<5
 
 
+def test_invalid_domain():
+    #import requests
+    with pytest.raises(requests.exceptions.RequestException):
+        requests.get("https://this-domain-does-not-exist.invalid", timeout=3)
+
+
+def test_create_user(api_session, base_url):
+    payload = {
+        "name": "Roman",
+        "email": "roman@example.com"
+    }
+
+    response = api_session.post(
+        f"{base_url}/users",
+        json=payload
+    )
+
+    assert response.status_code == 201
+
+    data = response.json()
+    assert data["name"] == "Roman"
+    assert data["email"] == "roman@example.com"
+
+@pytest.mark.parametrize(
+    "name, email",
+    [
+        ("Roman", "roman@example.com"),
+        ("Ali", "ali@example.com"),
+        ("Sara", "sara@example.com")
+    ]
+)
+def test_create_multiple_users(api_session, base_url, name, email):
+    payload = {
+        "name": name,
+        "email": email
+    }
+
+    response = api_session.post(
+        f"{base_url}/users",
+        json=payload
+    )
+
+    assert response.status_code == 201
+
+    data = response.json()
+    assert data["name"] == name
+    assert data["email"] == email
