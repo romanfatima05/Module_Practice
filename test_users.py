@@ -164,3 +164,84 @@ def test_create_multiple_users(api_session, base_url, name, email):
     data = response.json()
     assert data["name"] == name
     assert data["email"] == email
+
+
+
+
+
+def test_missing_users(api_session,base_url):
+    payload={"name":"roman"}
+    response = api_session.post(
+            f"{base_url}/users",
+            json=payload
+        )
+    assert response.status_code == 201
+    
+    data = response.json()
+    assert data["name"] == "roman"
+    assert "email" not in data
+
+
+
+def test_update_users(api_session,base_url):
+    payload={  
+           "name":"roman update",
+           "email":"roman@gmail.com"
+           }
+    response = api_session.put(
+              f"{base_url}/users/1",
+              json=payload
+        )
+    assert response.status_code == 200
+    
+    data = response.json()
+    assert data["name"] == "roman update"
+    assert data["email" ]=="roman@gmail.com"
+    print(response.json())
+
+def test_change_users(api_session,base_url):
+    payload={  
+           "name":"roman patch",
+          
+           }
+    response = api_session.patch(
+              f"{base_url}/users/1",
+              json=payload
+        )
+    assert response.status_code == 200
+    
+    data = response.json()
+    assert data["name"] == "roman patch"
+    print(response.json())
+
+def test_delete_user(api_session, base_url):
+    response = api_session.delete(f"{base_url}/users/1")
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data == {}
+
+
+
+def test_get_missing_user(api_session, base_url):
+    response = api_session.get(f"{base_url}/users/999")
+
+    assert response.status_code == 404
+    assert response.json() == {}
+
+
+@pytest.mark.parametrize(
+        "user__id",[888,999,1500,34000]
+) 
+def test_multimissing_users(api_session, base_url,user__id):
+    response = api_session.get(f"{base_url}/users/{user__id}")
+
+    assert response.status_code == 404
+    assert response.json() == {}
+
+
+def test_invalid_user_id(api_session, base_url):
+    response = api_session.get(f"{base_url}/users/abc")
+
+    assert response.status_code == 404
+    assert response.json() == {}

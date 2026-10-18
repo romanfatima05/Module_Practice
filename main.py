@@ -1,9 +1,9 @@
 arr0=[1,2,3,4,5,6,7]
 for i in range(len(arr0)):
     print(arr0[i])
-    
 arr=[10,20,30,40,34]
-value=67
+value=67    
+
 index=2
 arr.append(0)
 for i in range(len(arr)-1,index,-1):
