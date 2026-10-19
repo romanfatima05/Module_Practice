@@ -245,3 +245,57 @@ def test_invalid_user_id(api_session, base_url):
 
     assert response.status_code == 404
     assert response.json() == {}
+
+def test_required_user_fields(api_session, base_url):
+    response = api_session.get(f"{base_url}/users/1")
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert "id" in data
+    assert "name" in data
+    assert "email" in data
+from jsonschema import validate
+
+def test_user_json_schema(api_session, base_url):
+    response = api_session.get(f"{base_url}/users/1")
+    assert response.status_code == 200
+
+    data = response.json()
+
+    schema = {
+        "type": "object",
+        "required": ["id", "name", "email"],
+        "properties": {
+            "id": {"type": "integer"},
+            "name": {"type": "string"},
+            "email": {"type": "string"}
+        }
+    }
+
+    validate(instance=data, schema=schema)
+
+
+from jsonschema import validate,ValidationError
+def test_negativevalidate_users():
+    schema={
+        "type":"object",
+        "required":["id","name","email"],
+        "properties":{
+            "id":{"type":"integer"},
+            "name":{"type":"string"},
+            "email":{"type":"string"}
+        },
+        "additionalProperties": False
+    }
+    invalid_data={
+    "id":1,
+    "name":"Ali",
+    "email":"rfg@gmail.com",
+    "age": 20
+
+}
+    with pytest.raises(ValidationError):
+       validate(instance=invalid_data, schema=schema)
+
