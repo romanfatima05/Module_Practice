@@ -277,7 +277,7 @@ def test_user_json_schema(api_session, base_url):
     validate(instance=data, schema=schema)
 
 
-from jsonschema import validate,ValidationError
+from jsonschema import validate,ValidationError,FormatChecker
 def test_negativevalidate_users():
     schema={
         "type":"object",
@@ -299,3 +299,56 @@ def test_negativevalidate_users():
     with pytest.raises(ValidationError):
        validate(instance=invalid_data, schema=schema)
 
+def test_all_users_schema(api_session, base_url):
+    response = api_session.get(f"{base_url}/users")
+    assert response.status_code == 200
+
+    users = response.json()
+
+    schema = {
+        "type": "array",
+        "minItems": 7,
+        "items": {
+            "type": "object",
+            "required": ["id", "name", "email"],
+            "properties": {
+                "id": {"type": "integer"},
+                "name": {"type": "string"},
+                "email": {"type": "string"}
+            }
+        }
+    }
+
+    validate(instance=users, schema=schema)
+
+
+def test_all_users_schema(api_session, base_url):
+    response = api_session.get(f"{base_url}/users")
+    assert response.status_code == 200
+
+    users = response.json()
+
+    schema = {
+        "type": "array",
+        "minItems": 4,
+        "items": {
+            "type": "object",
+            "required": ["id", "name", "email"],
+            "properties": {
+                "id": {"type": "integer"},
+                "name": {"type": "string", "minLength": 1},
+                "email": {"type": "string", "minLength": 1,"Format":"email"}
+            },
+            "additionalProperties":False
+        }
+    }
+    invalid_data1={
+        "id":1,
+        "name":"Ali",
+        "email":"rfg@gmail.com",
+        #"age": 20
+    
+    }
+    with pytest.raises(ValidationError):
+
+       validate(instance=invalid_data1, schema=schema,format_checker=FormatChecker())
