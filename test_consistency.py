@@ -70,7 +70,7 @@ def test_unique_email_users(api_session,base_url):
 
 #....................................................................................................
 
-#check ther is diuplication of email give invalid or fail
+#check there is duplication of email give invalid or fail
 def test_duplicate_email_detection():
     emails = ["ali@example.com", "sara@example.com", "ali@example.com"]
 
@@ -113,8 +113,40 @@ def test_users_response_time(api_session,base_url):
 
 
     assert response.elapsed.total_seconds()<2
+#...........................................................................................
 
+def test_patch_user_name(api_session, base_url):
+    user_id = 1
 
+    updated_data = {
+        "name": "Roman Updated"
+    }
+
+    response = api_session.patch(
+        f"{base_url}/users/{user_id}",
+        json=updated_data
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert response_data["name"] == updated_data["name"]
+
+#....................................................
+
+def test_patch_invalid_user_id(api_session, base_url):
+    response = api_session.patch(
+        f"{base_url}/users/9999",
+        json={"name": "Roman Updated","id":"9999"}
+    )
+
+    assert response.status_code == 200
+    data=response.json()
+    assert "id" in data
+    assert str(data["id"]) == "9999"
+    assert data["name"] == "Roman Updated"
+    print(data)
 
    
 
