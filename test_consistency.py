@@ -148,5 +148,38 @@ def test_patch_invalid_user_id(api_session, base_url):
     assert data["name"] == "Roman Updated"
     print(data)
 
-   
+#...............................................................
+
+def test_invalid_user_update(api_session,base_url):
+    user_id=1
+    original_response=api_session.get(f"{base_url}/users/{user_id}")
+    assert original_response.status_code == 200
+
+    original_data = original_response.json()
+    original_email = original_data["email"]
+    response=api_session.patch(f"{base_url}/users/{user_id}",
+    json={"name":"Roman update"}
+    )
+    assert response.status_code==200
+    data=response.json()
+    assert data["name"]=="Roman update"
+    assert data["email"]==original_email
+
+#......................................................................
+def test_email_user_type(api_session,base_url) :
+    response=api_session.get(f"{base_url}/users/1") 
+    assert response.status_code==200
+    data=response.json()
+    assert isinstance(data["email"],str)
+
+#.................................................................API response-time thresholds
+
+import time
+def test_response_user_time(api_session,base_url):
+    start=time.perf_counter()
+    response=api_session.get(f"{base_url}/users")
+    elapsed=time.perf_counter() - start
+    assert response.status_code==200
+    assert elapsed<2.0, f"API took {elapsed:.2f} seconds"
+
 
