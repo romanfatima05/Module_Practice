@@ -41,3 +41,30 @@ def test_count_api_attempt():
 
     assert attempts == 3
 
+#......................................................................
+
+def test_retry_actual_attempts():
+    attempts = 0
+    status_code = 500
+
+    for attempt in range(1, 4):
+        attempts += 1
+        status_code = fake1_api_request(attempt)
+
+        if status_code == 200:
+            break
+
+    assert attempts == 3
+    assert status_code == 200
+
+
+#..................................................................................
+
+def test_stop_retry_after_three_failures():
+    attempts=0
+    status_code=500
+    for attempt in range(1,4):
+        attempts +=1
+        status_code=500
+    assert attempts==3
+    assert status_code==500
