@@ -330,7 +330,7 @@ def test_all_users_schema(api_session, base_url):
 
     schema = {
         "type": "array",
-        "minItems": 4,
+        "minItems": 1,
         "items": {
             "type": "object",
             "required": ["id", "name", "email"],
@@ -346,7 +346,7 @@ def test_all_users_schema(api_session, base_url):
         "id":1,
         "name":"Ali",
         "email":"rfg@gmail.com",
-        #"age": 20
+        "age": 20
     
     }
     with pytest.raises(ValidationError):

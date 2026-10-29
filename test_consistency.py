@@ -183,3 +183,33 @@ def test_response_user_time(api_session,base_url):
     assert elapsed<2.0, f"API took {elapsed:.2f} seconds"
 
 
+#........................................................two API responses contain the same data.
+
+def test_user_data_matches(api_session, base_url):
+    all_response = api_session.get(f"{base_url}/users")
+    single_response = api_session.get(f"{base_url}/users/1")
+
+    all_users = all_response.json()
+    single_user = single_response.json()
+
+    user_from_list = all_users[0]
+
+    assert user_from_list["name"] == single_user["name"]
+#........................................verify id
+def test_user_id_match(api_session,base_url):
+    all_response=api_session.get(f"{base_url}/users")
+    single_response=api_session.get(f"{base_url}/users/1")
+    all_user=all_response.json()
+    single_user=single_response.json()
+    user_from_list=all_user[0]
+    assert user_from_list["id"]==single_user["id"]
+    assert single_user["id"]==1
+#........................................email verify
+def test_user_email_match(api_session,base_url):
+    all_response=api_session.get(f"{base_url}/users")
+    single_response=api_session.get(f"{base_url}/users/1")
+    all_user=all_response.json()
+    single_user=single_response.json()
+    user_from_list=all_user[0]
+    assert user_from_list["email"]==single_user["email"]
+    assert single_user["id"]==1
