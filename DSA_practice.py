@@ -88,6 +88,80 @@ for i in range(len(arr)):
         print("Maximum:", arr[i])
         break
 
+#.....................................................merge sort
+def merge_sort(arr):
+   if len(arr)<=1:
+      return arr
+   mid=len(arr)//2
+   left=merge_sort(arr[:mid])
+   right=merge_sort(arr[mid:])
+
+   result=[]
+   i=0
+   j=0
+   while i < len(left) and j < len(right):
+      if left[i]<=right[j]:
+        result.append(left[i])
+        i += 1
+      else:
+         result.append(right[j])
+         j += 1
+   result.extend(left[i:])
+   result.extend(right[j:])
+   return result
+arr=[8,3,6,2,5,0,12]
+print(merge_sort(arr))
+
+#.................................heap min
+import heapq
+arr=[3,9,2,10]
+heapq.heapify(arr)
+print(arr)
+print(heapq.heappop(arr))
+removed=heapq.heappop(arr)
+print(removed)
+print(arr)
+heapq.heappush(arr,12)
+print(arr)
+print("small",arr[0])
+
+
+#................................................heap max
+
+arr=[4,8,3,10,9]
+max_heap=[-x for x in arr]
+heapq.heapify(max_heap)
+print(max_heap)
+largest=-(heapq.heappop(max_heap))
+print(largest)
+
+#..............................................binary search
+arr=[2,4,6,8,10,12]
+target=10
+low=arr[0]
+high=len(arr)-1
+while low<=high:
+   mid=(low+high)//2
+   if arr[mid]==target:
+      print("found",mid)
+      break
+   if arr[mid]<target:
+      low=mid+1
+   else:
+      high=mid-1
+
+#.........................................................bubble sort
+arr=[2,0,4,3,1]
+for i in range(len(arr)):
+   for j in range(len(arr)-1-i):
+      if arr[j]>=arr[j+1]:
+         temp=arr[j]
+         arr[j]=arr[j+1]
+         arr[j+1]=temp
+print(arr)
+
+
+
 
 
    
