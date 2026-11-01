@@ -213,3 +213,185 @@ def test_user_email_match(api_session,base_url):
     user_from_list=all_user[0]
     assert user_from_list["email"]==single_user["email"]
     assert single_user["id"]==1
+
+#.............................................:test_invalid_structure
+def test_invalid_structure(api_session,base_url):
+    response=api_session.get(f"{base_url}/users")
+    users=response.json()
+    assert isinstance(users,list)
+    assert len(users)>0
+
+#..............................................nested json date validation
+
+def test_user_address_structure(api_session, base_url):
+    response = api_session.get(f"{base_url}/users/1")
+    user = response.json()
+
+    assert "address" in user
+    assert isinstance(user["address"], dict)
+    assert "city" in user["address"]
+    assert isinstance(user["address"]["city"], str)
+#..................................................
+from jsonschema import validate
+def test_validate_schema(api_session,base_url):
+    response=api_session.get(f"{base_url}/users/1")
+    users=response.json()
+    schema={
+        "type":"object",
+        "properties":{
+            "name":{
+                "type":"string"
+            },
+            "address":{
+                "type":"object",
+                "properties":{
+                    "city":{
+                        "type":"string"
+                    }
+                },
+                    "required":["city"]
+            }
+        },
+            "required":["name","address"]
+        
+    }
+    validate(instance=users,schema=schema)
+
+#.....................................................validation error
+import pytest
+from jsonschema import validate, ValidationError
+def test_invalid_nested_schema():
+    users = {
+        "name":345,
+        "address": {
+            "city": "123"
+        }
+    }
+    schema={
+            "type":"object",
+            "properties":{
+                "name":{
+                    "type":"string"
+                },
+                "address":{
+                    "type":"object",
+                    "properties":{
+                        "city":{
+                            "type":"string"
+                        }
+                    },
+                        "required":["city"]
+                }
+            },
+                "required":["name","address"]
+            
+        }
+    with pytest.raises(ValidationError):
+        validate(instance=users,schema=schema)
+
+#.................................................addition properties
+
+import pytest
+from jsonschema import validate, ValidationError
+def test_invalid_additional_schema():
+    users = {
+        "name":"Ali",
+        "address": {
+            "city": "123",
+            "country": "Pakistan"
+        }
+    }
+    schema={
+            "type":"object",
+            "properties":{
+                "name":{
+                    "type":"string"
+                },
+                "address":{
+                    "type":"object",
+                    "properties":{
+                        "city":{
+                            "type":"string",
+                        
+                    }     
+                        
+                    },
+                        "additionalProperties": False,
+                        "required":["city"]
+                }
+            },
+                "required":["name","address"]
+            
+        }
+    with pytest.raises(ValidationError):
+        validate(instance=users,schema=schema)
+
+
+
+#...........................................
+import pytest
+from jsonschema import validate, ValidationError
+def test_invalid_missing_schema():
+    users = {
+        "name":"Ali",
+        "address": {
+            #"city": "123",
+            "country": "Pakistan"
+        }
+    }
+    schema={
+            "type":"object",
+            "properties":{
+                "name":{
+                    "type":"string"
+                },
+                "address":{
+                    "type":"object",
+                    "properties":{
+                        "country":{
+                            "type":"string",
+                        
+                    }     
+                        
+                    },
+                        "additionalProperties": False,
+                        "required":["city"]
+                }
+            },
+                "required":["name","address"]
+            
+        }
+    with pytest.raises(ValidationError):
+        validate(instance=users,schema=schema)
+#....................................................wrong data type
+from jsonschema import validate,ValidationError
+def test_wrong_data():
+    users={
+        "name":123,
+        "address":{
+            "city":123
+        }
+
+    }
+    scehema={
+        "type":"object",
+        "properties":{
+            "name":{
+                "type":"string"
+            },
+            "address":{
+                "type":"object",
+                "properties":{
+                    "city":{
+                        "type":"string"
+                    }
+                },
+                "required":["city"]
+                }
+        },
+        "required":["name","address"]
+    }
+    with pytest.raises(ValidationError):
+        validate(instance=users,schema=scehema)
+    
+

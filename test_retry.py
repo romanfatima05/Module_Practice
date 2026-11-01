@@ -68,3 +68,13 @@ def test_stop_retry_after_three_failures():
         status_code=500
     assert attempts==3
     assert status_code==500
+
+#..................................................................................
+def test_users_response_is_list(api_session, base_url):
+    response = api_session.get(f"{base_url}/users")
+
+    users = response.json()
+
+    assert isinstance(users, list)
+    assert len(users) > 0
+

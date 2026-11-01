@@ -62,7 +62,7 @@ def hanoi(n,source,auxillary,destination):
    
 hanoi(3,"A", "B", "C")
 
-#minmax...................
+#........................................minmax
 arr=[10,5,6,20,15]
 min=arr[0]
 max=arr[0]
@@ -73,20 +73,20 @@ for i in range(1,len(arr)):
       min=arr[i]
 print("Maximum:", max)
 print("Minimum:", min)
-
+#.................................naive method
 arr = [10, 5, 8, 20, 15]
 
 for i in range(len(arr)):
     largest = True
-
-    for j in range(len(arr)):
+for i in range(len(arr)):
+    for j in range(len(arr)-1-i):
         if arr[j] > arr[i]:
             largest = False
             break
 
-    if largest:
-        print("Maximum:", arr[i])
-        break
+        if largest:
+          print("Maximum:", arr[i])
+          break
 
 #.....................................................merge sort
 def merge_sort(arr):
@@ -160,6 +160,23 @@ for i in range(len(arr)):
          arr[j+1]=temp
 print(arr)
 
+
+
+#......................................shell sort
+
+arr2=[8,3,7,4,9,2]
+gap=len(arr2)//2
+while gap>0:
+   for i in range(gap,len(arr2)):
+      temp=arr2[i]
+      j=i
+
+      while j>=gap and arr2[j-gap]>temp:
+         arr2[j]=arr2[j-gap]
+         j-=gap
+         arr2[j]=temp
+   gap//=2
+print(arr2)
 
 
 
