@@ -373,7 +373,7 @@ def test_wrong_data():
         }
 
     }
-    scehema={
+    schema={
         "type":"object",
         "properties":{
             "name":{
@@ -392,6 +392,121 @@ def test_wrong_data():
         "required":["name","address"]
     }
     with pytest.raises(ValidationError):
-        validate(instance=users,schema=scehema)
-    
+        validate(instance=users,schema=schema)
+
+#...................................................................draft7validator
+from jsonschema import Draft7Validator
+def test_all_errors():
+    users={
+        "name":1234,
+        "address":{
+          "city":1234
+        }
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "name":{
+                "type":"string"
+            },
+            "address":{
+                "type":"object",
+                "properties":{
+                    "city":{
+                        "type":"string"
+                    }
+                },
+                "required":["city"]
+            }
+        },
+        "required":["name","address"]
+
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(users))
+    #assert len(errors)==2
+    for error in errors:
+        print("\n--- Validation Error ---")
+        print("Field:", list(error.path))
+        print(error.message)
+        print("Failed rule:", error.validator)
+        print("Expected:", error.validator_value)
+    assert len(errors)==2
+
+#.................................................................
+from jsonschema import Draft7Validator
+
+def test_collct_error():
+
+    users = {
+        "address": {
+            "city": "Bahawalpur",
+            "country": "Pakistan"
+        },
+        "age": 22
+    }
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "address": {
+                "type": "object",
+                "properties": {
+                    "city": {
+                        "type": "string"
+                    }
+                },
+                "required": ["city"],
+                "additionalProperties": False
+            }
+        },
+        "required": ["name", "address"],
+        "additionalProperties": False
+    }
+
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(users))
+
+    for error in errors:
+        print("\n--- Validation Error ---")
+        print("Field:", list(error.path))
+        print("Message:", error.message)
+        print("Failed rule:", error.validator)
+        print("Expected:", error.validator_value)
+
+    assert len(errors) == 3
+
+#...........................................validate multiple user records together
+def test_multiple_records():
+    users=[
+        {"id":1,"name":"Ali","email":"sara@gmail.com"},
+        {"id":2,"name":123,"email":"sar@gmail.com"},
+        {"id":3,"name":"Al","email":"saa@gmail.com"}
+    ]
+    schema={
+        "type":"array",
+        "items": {
+        "type": "object",
+        "properties":{
+            "id":{"type":"integer"},
+            "name":{
+                "type":"string"
+            },
+             "email":{
+                 "type":"string"
+            }
+        },
+        "required":["id","name","email"]
+        }
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(users))
+    for error in errors:
+       
+        print("field",list(error.path))
+        print("failed",error.message)
+        assert len(errors)==1
 
