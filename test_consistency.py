@@ -483,7 +483,7 @@ def test_collct_error():
 def test_multiple_records():
     users=[
         {"id":1,"name":"Ali","email":"sara@gmail.com"},
-        {"id":2,"name":123,"email":"sar@gmail.com"},
+        {"id":"2","name":123,"email":"sar@gmail.com"},
         {"id":3,"name":"Al","email":"saa@gmail.com"}
     ]
     schema={
@@ -508,5 +508,67 @@ def test_multiple_records():
        
         print("field",list(error.path))
         print("failed",error.message)
-        assert len(errors)==1
+        assert len(errors)==2
+#...........................................email validator(format)
 
+def test_multiple1_records():
+    users=[
+        {"id":1,"name":"Ali","email":"sara@gmail.com"},
+        {"id":"2","name":123,"email":"sar@gmail.com"},
+        {"id":3,"name":"Al","email":"sa"}
+    ]
+    schema={
+        "type":"array",
+        "items": {
+        "type": "object",
+        "properties":{
+            "id":{"type":"integer"},
+            "name":{
+                "type":"string"
+            },
+             "email":{
+                 "type":"string",
+                 "format":"email"
+            }
+        },
+        "required":["id","name","email"]
+        }
+    }
+    validator=Draft7Validator(schema,format_checker=Draft7Validator.FORMAT_CHECKER)
+    errors=list(validator.iter_errors(users))
+    for error in errors:
+       
+        print("field",list(error.path))
+        print("failed",error.message)
+        assert len(errors)==3
+#.................................missing email
+def test_multiple2_records():
+    users=[
+        {"id":1,"name":"Ali","email":"sara@gmail.com"},
+        {"id":"2","name":123,"email":"sar@gmail.com"},
+        {"id":3,"name":"Al"}
+    ]
+    schema={
+        "type":"array",
+        "items": {
+        "type": "object",
+        "properties":{
+            "id":{"type":"integer"},
+            "name":{
+                "type":"string"
+            },
+             "email":{
+                 "type":"string",
+                 "format":"email"
+            }
+        },
+        "required":["id","name","email"]
+        }
+    }
+    validator=Draft7Validator(schema,format_checker=Draft7Validator.FORMAT_CHECKER)
+    errors=list(validator.iter_errors(users))
+    for error in errors:
+       
+        print("field",list(error.path))
+        print("failed",error.message)
+        assert len(errors)==3
