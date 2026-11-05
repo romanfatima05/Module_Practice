@@ -572,3 +572,127 @@ def test_multiple2_records():
         print("field",list(error.path))
         print("failed",error.message)
         assert len(errors)==3
+
+#.......................................aditional
+def test_multiple3_records():
+    users=[
+        {"id":1,"name":"Ali","email":"sara@gmail.com","age":21},
+        {"id":"2","name":123,"email":"sar@gmail.com"},
+        {"id":3,"name":"Al"}
+    ]
+    schema={
+        "type":"array",
+        "items": {
+        "type": "object",
+        "properties":{
+            "id":{"type":"integer"},
+            "name":{
+                "type":"string"
+            },
+             "email":{
+                 "type":"string",
+                 "format":"email"
+            }
+        },
+        "required":["id","name","email"],
+        "additionalProperties":False
+        }
+    }
+    validator=Draft7Validator(schema,format_checker=Draft7Validator.FORMAT_CHECKER)
+    errors=list(validator.iter_errors(users))
+    for error in errors:
+       
+        print("field",list(error.path))
+        print("failed",error.message)
+        assert len(errors)==4
+#......................................nested
+from jsonschema import Draft7Validator
+
+def test_nested_user():
+
+    user = {
+        "id": 1,
+        "name": "Roman",
+        "address": {
+            "city": 123,
+           
+        }
+    }
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "id": {"type": "integer"},
+            "name": {"type": "string"},
+            "address": {
+                "type": "object",
+                "properties": {
+                    "city": {"type": "string"},
+                    "zipcode": {"type": "string"}
+                },
+                "required": ["city", "zipcode"]
+            }
+        },
+        "required": ["id", "name", "address"]
+    }
+
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(user))
+
+    for error in errors:
+        print("Field:", list(error.path))
+        print("Error:", error.message)
+
+    assert len(errors) == 2
+#.........................................
+def test_nested_multiple_users():
+
+    users = [
+        {
+            "id": 1,
+            "name": "Ali",
+            "address": {
+                "city": "Bahawalpur",
+                "zipcode": "63100"
+            }
+        },
+        {
+            "id": 2,
+            "name": 123,
+            "address": {
+                "city": 456,
+                "zipcode": "63000"
+            }
+        }
+    ]
+
+    schema = {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+                "id": {"type": "integer"},
+                "name": {"type": "string"},
+                "address": {
+                    "type": "object",
+                    "properties": {
+                        "city": {"type": "string"},
+                        "zipcode": {"type": "string"}
+                    },
+                    "required": ["city", "zipcode"],
+                    "additionalProperties": False
+                }
+            },
+            "required": ["id", "name", "address"],
+            "additionalProperties": False
+        }
+    }
+
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(users))
+
+    for error in errors:
+        print("Field:", list(error.path))
+        print("Error:", error.message)
+
+    assert len(errors) == 2
