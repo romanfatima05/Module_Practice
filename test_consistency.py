@@ -696,3 +696,111 @@ def test_nested_multiple_users():
         print("Error:", error.message)
 
     assert len(errors) == 2
+
+#.....................................deep nested json object
+def test_deep_nested():
+    users={
+        "name":"Ali",
+        "age":"123",
+        "address":{
+            "city":"bwp",
+            "zipcode":"12345",
+            "geo":{
+                "lat":12356,
+                "lng":"12800"
+            }
+                
+        }
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "name":{
+                "type":"string"
+            },
+            "age":{
+                "type":"integer"
+            },
+            "address":{
+                "type":"object",
+                "properties":{
+                    "city":{
+                        "type":"string"
+                    },
+                    "zipcode":{
+                        "type":"string"
+                    },
+                    "geo":{
+                        "type":"object",
+                        "properties":{
+                            "lat":{
+                                "type":"string"
+
+                            },
+                            "lng":{
+                                 "type":"string"
+                            }
+                        },
+                        "required":["lng","lat"]
+                    }
+                },
+                "required":["city","zipcode","geo"],
+                "additionalProperties":False
+              
+            }
+        },
+        "required":["name","age","address"],
+        "additionalProperties":False
+
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(users))
+    for error in errors:
+        print("failed",error.message)
+        print("field",list(error.path))
+        print("validate",error.validator)
+        print("value",error.validator_value)
+        assert len(errors)==2
+
+#.........................................min,max items
+def test_min_max_items():
+
+    users = ["Ali","sara","ahmad","sara","ahmad"]
+
+    schema = {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 2,
+        "maxItems": 4
+    }
+
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(users))
+
+    for error in errors:
+        print("Error:", error.message)
+        print("Rule:", error.validator)
+
+    assert len(errors) == 1
+
+#...........................unique item
+def test_unique_items():
+
+    users = ["Ali","sara","ahmad"]
+
+    schema = {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 2,
+        "maxItems": 4,
+    
+        "uniqueItems":True
+    }
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(users))
+
+    for error in errors:
+        print("Error:", error.message)
+        print("Rule:", error.validator)
+
+    assert len(errors) == 0
