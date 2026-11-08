@@ -859,7 +859,7 @@ def test_min_properties():
     
     assert len(errors) == 2
 
-#............max
+#............maxproperties
 def test_max_properties():
    user = {
      "id": 1,
