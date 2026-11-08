@@ -804,3 +804,88 @@ def test_unique_items():
         print("Rule:", error.validator)
 
     assert len(errors) == 0
+
+#..........................min,max properties
+def test_min_max_properties():
+
+    user = {
+        "id": 1,
+        "name": "Ali",
+        "email": "ali@gmail.com"
+    }
+
+    schema = {
+        "type": "object",
+        "properties": {
+           "id": {"type": "integer"},
+            "name": {"type": "string"},
+            "email": {"type": "string"}
+        },
+        "minProperties": 2,
+        "maxProperties": 4
+    }
+
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(user))
+
+    for error in errors:
+        print("Error:", error.message)
+        print("Rule:", error.validator)
+
+    assert len(errors) == 1
+
+#...................................min
+def test_min_properties():
+    user = {
+      "email": "ali@gmail.com",
+      "age": 22
+}
+    schema = {
+            "type": "object",
+            "properties": {
+               "id": {"type": "integer"},
+                "name": {"type": "string"},
+                "email": {"type": "string"}
+            },
+            "minProperties": 2,
+            "required":["id","name"]
+        }
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(user))
+    
+    for error in errors:
+            print("Error:", error.message)
+            print("Rule:", error.validator)
+    
+    assert len(errors) == 2
+
+#............max
+def test_max_properties():
+   user = {
+     "id": 1,
+     "name": "Ali",
+     "email": "ali@gmail.com",
+     "age": 22,
+     "city": "Bahawalpur"
+}
+   schema = {
+               "type": "object",
+               "properties": {
+                  "id": {"type": "integer"},
+                   "name": {"type": "string"},
+                   "email": {"type": "string"}
+               },
+               "maxProperties": 4,
+               "required":["id","name","email"],
+               "additionalProperties": False
+           }
+   validator = Draft7Validator(schema)
+   errors = list(validator.iter_errors(user))
+       
+   for error in errors:
+               print("Error:", error.message)
+               print("Rule:", error.validator)
+       
+   assert len(errors) == 2
+
+

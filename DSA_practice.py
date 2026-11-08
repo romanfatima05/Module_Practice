@@ -40,18 +40,18 @@ for i in range(len(arr)-1):
 print("sorted list",arr)
 low = 0
 high = len(arr) - 1
-
+found=-1
 while low <= high:
     mid = (low + high) // 2
 
     if arr[mid] == target:
-        print("Found at index", mid)
+        found=mid
         break
     elif arr[mid] < target:
         low = mid + 1
     else:
         high = mid - 1
-
+print(found)
 def hanoi(n,source,auxillary,destination):
    if n==1:
       print(source,"->",destination)
