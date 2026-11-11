@@ -888,4 +888,100 @@ def test_max_properties():
        
    assert len(errors) == 2
 
+#numeric validation
+def test_numeric():
+    user={
+        "age":45
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "age":{
+                "type":"integer",
+                "maximum":40,
+                "minimum":18
+            }
+        },
+         "required":["age"]
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("field",error.message)
+        print("value error",error.validator_value)
+    assert len(errors)==1
 
+#exclusive max
+def test_numerics():
+    user={
+        "age":39
+        
+
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "age":{
+                "type":"integer",
+                
+                "exclusiveMaximum":40
+            }
+        },
+         "required":["age"]
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("field",error.message)
+        print("value error",error.validator_value)
+    assert len(errors)==0
+
+#exclusive min
+def test_numerics1():
+    user={
+        "age":19
+        
+
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "age":{
+                "type":"integer",
+                
+                "exclusiveMinimum":18
+            }
+        },
+         "required":["age"]
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("field",error.message)
+        print("value error",error.validator_value)
+    assert len(errors)==0
+
+# multipleOf
+def test_divisible():
+    user={
+        "age":23
+        
+
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "age":{
+                "type":"integer",
+                
+                "multipleOf":5
+            }
+        },
+         "required":["age"]
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("field",error.message)
+        print("value error",error.validator_value)
+    assert len(errors)==1
