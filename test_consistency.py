@@ -985,3 +985,68 @@ def test_divisible():
         print("field",error.message)
         print("value error",error.validator_value)
     assert len(errors)==1
+
+#.......................pattern 
+def test_user_pattern():
+    user={
+
+        "name":"123ali"
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "name":{
+                "type":"string",
+                "pattern": "^\\d+[A-Za-z]+$"
+            }
+        },
+        "required":["name"]
+        
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("field",error.message)
+        print("value",error.validator_value)
+    assert len(errors)==0
+#enum
+def test_status_enum():
+    user={
+    "status":"inacti"
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "status": {
+                "type": "string",
+                 "enum": ["active", "inactive", "pending"]
+            }
+        }
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("field",error.message)
+        print("value",error.validator_value)
+    assert len(errors)==1
+
+#................valu in enum
+def test_status_num():
+    user={
+    "value":6
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "value": {
+                "type": "integer",
+                 "enum": [5,6,7]
+            }
+        }
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("field",error.message)
+        print("value",error.validator_value)
+    assert len(errors)==0
