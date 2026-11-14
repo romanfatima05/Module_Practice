@@ -1050,3 +1050,162 @@ def test_status_num():
         print("field",error.message)
         print("value",error.validator_value)
     assert len(errors)==0
+
+#.............................const
+def test_const():
+    user={
+        "constant":"pakist"
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "constant":{
+                "type":"string",
+                "const":"pakistan"
+            }
+
+        },
+        "required":["constant"]
+
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("failed",error.message)
+        print("value",error.validator_value)
+    assert len(errors)==1
+
+#......................oneOf
+
+def test_one_of():
+
+    user = {
+        "user_id": 25,
+        "user_id":"ali"
+    }
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "user_id": {
+                "oneOf": [
+                    {"type": "integer"},
+                    {"type": "string"}
+                ]
+            }
+        },
+        "required": ["user_id"]
+    }
+
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(user))
+
+    for error in errors:
+        print("Field:", error.message)
+        print("Rule:", error.validator)
+
+    assert len(errors) == 0
+
+#anyOf
+def test_any_of():
+
+    user = {
+        "user_id": 25,
+        
+    }
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "user_id": {
+                "anyOf": [
+                    {"type": "integer"},
+                    {"type": "number"}
+                ]
+            }
+        },
+        "required": ["user_id"]
+    }
+
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(user))
+
+    for error in errors:
+        print("Field:", error.message)
+        print("Rule:", error.validator)
+
+    assert len(errors) == 0
+#.............allOf
+def test_all_of():
+
+    user = {
+        "age": 19
+    }
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "age": {
+                "allOf": [
+                    {"type": "integer"},
+                    {"minimum": 18},
+                    {"maximum": 40}
+                ]
+            }
+        }
+    }
+
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(user))
+
+    for error in errors:
+        print(error.message)
+
+    assert len(errors) == 0
+
+#.................not
+def test_not():
+    user={
+        "age":25
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "age":{
+                "not":{
+                    "type":"string"
+                }
+            }
+        },
+        "required":["age"]
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("failed",error.message)
+    assert len(errors)==1
+
+#........................
+def test_not1():
+    user={
+        "age":25
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "age":{
+                "allOf":[
+                    {"type":"integer"}
+                ],
+                "not":{
+                    "type":"string"
+                }
+            }
+        },
+        "required":["age"]
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("failed",error.message)
+    assert len(errors)==0
