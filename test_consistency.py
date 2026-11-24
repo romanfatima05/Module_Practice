@@ -1209,3 +1209,108 @@ def test_not1():
     for error in errors:
         print("failed",error.message)
     assert len(errors)==0
+
+#..............................if-then-else
+def test_if_then_else():
+
+    user = {
+        "age": 20,
+       # "adult_id": "A123",
+        "guardian_name":"Ali"
+    }
+
+    schema = {
+        "type": "object",
+        "properties": {
+            "age": {"type": "integer"},
+            "adult_id": {"type": "string"},
+            "guardian_name": {"type": "string"}
+        },
+
+        "if": {
+            "properties": {
+                "age": {"minimum": 18}
+            },
+            "required": ["age"]
+        },
+
+        "then": {
+            "required": ["adult_id"]
+        },
+
+        "else": {
+            "required": ["guardian_name"]
+        }
+    }
+
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(user))
+
+    for error in errors:
+        print("Failed:", error.message)
+
+    assert len(errors) == 1
+
+#dependent required
+def test_dependent():
+    user={
+        "name":"Ali",
+        "email":"1234@gmail.com",
+        #"phone": "03001234567"
+    }
+    schema={
+        "type":"object",
+        "properties":{
+            "name":{
+                "type":"string"
+            },
+            "email":{
+                "type":"string"
+            },
+            
+        },
+        "dependencies":{
+            "email":["phone"]
+    }
+    }
+    validator = Draft7Validator(schema)
+    errors = list(validator.iter_errors(user))
+    
+    for error in errors:
+        print("Failed:", error.message)
+    
+        assert len(errors) == 1
+
+#property..................
+
+def test_property():
+    user = {
+    "user123": "Ali"
+}
+    schema={
+        "type":"object",
+        "propertyNames":{
+            "pattern": "^[a-z0-9]+$"
+        }
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("failed",error.message)
+    assert len(errors)==0                    
+#....................
+def test_property1():
+    user = {
+    "user_123": "Ali"
+}
+    schema={
+        "type":"object",
+        "propertyNames":{
+            "pattern": "^[a-z0-9_]+$"
+        }
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("failed",error.message)
+    assert len(errors)==0

@@ -48,7 +48,7 @@ def hanoi(n,source,auxillary,destination):
     print(source,"->",destination)
     hanoi(n-1,auxillary,source,destination)
 hanoi(3,"A", "B", "C")
-
+#print(hanoi)
 
 #sorted 
 
@@ -400,3 +400,88 @@ while gap >0:
 print("Shell Sort:", arr)
 
 
+#Radix
+def counting_sort(arr, exp):
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10
+
+    # Count each digit
+    for i in range(n):
+        digit = (arr[i] // exp) % 10
+        count[digit] += 1
+
+    # Calculate cumulative count
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+
+    # Place numbers in correct positions
+    i = n - 1
+    while i >= 0:
+        digit = (arr[i] // exp) % 10
+        output[count[digit] - 1] = arr[i]
+        count[digit] -= 1
+        i -= 1
+
+    # Copy output back into arr
+    for i in range(n):
+        arr[i] = output[i]
+
+
+def radix_sort(arr):
+    max_num = max(arr)
+    exp = 1
+
+    while max_num // exp > 0:
+        counting_sort(arr, exp)
+        exp *= 10
+
+    return arr
+
+
+arr = [170, 45, 75, 90, 802, 24, 2, 66]
+
+print("Radix Sort:", radix_sort(arr))
+
+#hep min
+def min_heap_insert(arr, value):
+    arr.append(value)
+
+    i = len(arr) - 1
+
+    while i > 0:
+        parent = (i - 1) // 2
+
+        if arr[i] < arr[parent]:
+            arr[i], arr[parent] = arr[parent], arr[i]
+            i = parent
+        else:
+            break
+
+    return arr
+arr = [9, 7, 2, 4]
+min_heap_insert(arr, 1)
+
+print("Min Heap:", arr)
+
+def max_heap_insert(arr, value):
+    arr.append(value)
+
+    i = len(arr) - 1
+
+    while i > 0:
+        parent = (i - 1) // 2
+
+        if arr[i] > arr[parent]:
+            arr[i], arr[parent] = arr[parent], arr[i]
+            i = parent
+        else:
+            break
+
+    return arr
+
+
+arr = [9, 7, 2, 4]
+max_heap_insert(arr, 10)
+
+print("Max Heap:", arr)
