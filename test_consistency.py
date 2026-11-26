@@ -1314,3 +1314,43 @@ def test_property1():
     for error in errors:
         print("failed",error.message)
     assert len(errors)==0
+
+#...................................patternProperry
+def test_pattern_properties():
+    user={
+        "user_name":"Ali"
+    }
+    schema={
+        "type":"object",
+        "patternProperties":{
+            "^user_":{
+                 "type":"string"
+            }
+        }
+       
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("failed",error.message)
+    assert len(errors)==0
+
+#...................................patternProperry
+def test_pattern_properties1():
+    user={
+        "user_name":123
+    }
+    schema={
+        "type":"object",
+        "patternProperties":{
+            "^user_":{
+                 "type":"string"
+            }
+        }
+       
+    }
+    validator=Draft7Validator(schema)
+    errors=list(validator.iter_errors(user))
+    for error in errors:
+        print("failed",error.message)
+    assert len(errors)==1
